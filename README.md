@@ -20,6 +20,9 @@ The patch tree is the `cjktty-patches/` submodule (from bigshans/cjktty-patches,
 <img src="https://github.com/user-attachments/assets/688fe305-f3b7-4e3a-abe8-76ffeb9bad23" />
 <img src="https://github.com/user-attachments/assets/7ae9a013-57bb-44e9-aa24-13c7bcd3081f" />
 
+<img src="https://github.com/user-attachments/assets/e782e292-797f-468f-bcd5-b4fc443583f1" />
+<img src="https://github.com/user-attachments/assets/1145b771-b59d-4a76-902e-0ae44805a588" />
+
 
 ## Get it
 
