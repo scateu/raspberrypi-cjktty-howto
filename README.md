@@ -9,6 +9,10 @@ your stock kernel keeps booting as a fallback.
 Background on how cjktty works is in `docs/cjktty-principles.zh.txt` (by the patch author, 蔡万钊).
 The patch tree is the `cjktty-patches/` submodule (from bigshans/cjktty-patches, itself from Gentoo-zh / zhmars).
 
+## native-build vs cross-compile
+ - CM4S: around 3.5 hours
+ - E5-2660 40 cores: around 5 minutes
+   
 ## Get it
 
 The upstream patch set is a git **submodule**, so clone recursively:
