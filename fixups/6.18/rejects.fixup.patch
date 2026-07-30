@@ -1,0 +1,24 @@
+--- a/include/linux/font.h	2026-07-30 11:15:11.503302570 +0800
++++ b/include/linux/font.h	2026-07-30 11:02:50.813905907 +0800
+@@ -50,7 +50,9 @@
+ 			font_mini_4x6,
+ 			font_6x10,
+ 			font_ter_16x32,
+-			font_6x8;
++			font_6x8,
++			font_cjk_16x16,
++			font_cjk_32x32;
+ 
+ /* Find a font with a specific name */
+ 
+--- a/drivers/video/fbdev/core/fbcon_rotate.c	2026-07-30 11:15:11.503504921 +0800
++++ b/drivers/video/fbdev/core/fbcon_rotate.c	2026-07-30 11:12:39.728732926 +0800
+@@ -112,7 +112,7 @@
+ 		info->fbops->fb_sync(info);
+ 
+ 	if (par->fd_size < d_cellsize * len) {
+-		kfree(par->fontbuffer);
++		kvfree(par->fontbuffer);
+ 		par->fontbuffer = NULL;
+ 		par->fd_size = 0;
+ 

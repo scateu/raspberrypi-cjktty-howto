@@ -1,0 +1,14 @@
+# local Claude/session state — not part of the project
+.claude/
+
+# build artifacts (if anyone builds inside the repo)
+*.o
+*.rej
+*.orig
+build.log
+patch-dryrun.log
+
+# editor / OS cruft
+.DS_Store
+*~
+*.swp

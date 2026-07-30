@@ -1,0 +1,3 @@
+[submodule "cjktty-patches"]
+	path = cjktty-patches
+	url = https://github.com/bigshans/cjktty-patches.git
