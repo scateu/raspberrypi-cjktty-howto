@@ -20,7 +20,7 @@ git submodule update --init --recursive
 ```
 
 Then copy the whole directory onto your Pi (or run in place) and use
-`./cjk-kernel.sh`. See [HOWTO.md](HOWTO.md) for native build, cross-compile,
+`./cjk-kernel.sh`. See [HOWTO.md](HOWTO.md) (中文: [HOWTO-ZH_CN.md](HOWTO-ZH_CN.md)) for native build, cross-compile,
 re-patching a new kernel version, and switching kernels.
 
 ---
@@ -157,6 +157,13 @@ check after patching: compile just the touched objects, e.g.
 | `install` | `modules_install` + copy `kernel8-cjk.img`, dtbs, overlays (non-destructive) |
 | `verify` | post-reboot checks + console test string |
 | `rollback` | remove the `kernel=kernel8-cjk.img` line from config.txt |
+
+### Distributable releases
+
+`mkrelease.sh` (run on the build machine) packages a finished build into a
+self-contained `dist/cjk-kernel-<release>-<arch>.tar.gz` that installs on any Pi
+with the bundled `install.sh` — no repo or toolchain needed. Ideal after a
+cross-compile. See [HOWTO.md § 2c](HOWTO.md#2c-package-a-redistributable-release-recommended-for-cross-builds).
 
 ### Env overrides
 

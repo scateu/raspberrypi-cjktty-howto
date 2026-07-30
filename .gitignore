@@ -8,6 +8,9 @@
 build.log
 patch-dryrun.log
 
+# release tarballs produced by mkrelease.sh
+dist/
+
 # editor / OS cruft
 .DS_Store
 *~

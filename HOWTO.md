@@ -1,5 +1,7 @@
 # HOWTO — build, cross-compile, re-patch, and switch a CJK Raspberry Pi kernel
 
+> 中文版本见 [HOWTO-ZH_CN.md](HOWTO-ZH_CN.md).
+
 This is the practical companion to `cjk-kernel.sh` and `README.md`.
 It answers four things:
 
@@ -143,6 +145,35 @@ sudo cp /tmp/overlays/*      /boot/firmware/overlays/
 ```
 
 Then enable in `config.txt` → [section 4](#4-switch-between-kernels).
+
+### 2c. Package a redistributable release (recommended for cross-builds)
+
+Instead of hand-copying files, turn the build into a single self-contained
+tarball with `mkrelease.sh`. Run it on the machine that compiled the kernel:
+
+```bash
+# native (on the Pi):
+./mkrelease.sh
+# cross-compiled (on an x86_64 box):
+CROSS_COMPILE=aarch64-linux-gnu- ./mkrelease.sh [SRCDIR] [OUTDIR]
+#   SRCDIR default ~/cjk-kernel-build/linux ; OUTDIR default <repo>/dist
+# Pi 5 / CM5 (2712): also set the boot image name
+IMAGE_NAME=kernel_2712-cjk.img CROSS_COMPILE=aarch64-linux-gnu- ./mkrelease.sh
+```
+
+It produces `dist/cjk-kernel-<release>-<arch>.tar.gz` (+ `.sha256`) containing
+the kernel image, dtbs, overlays, the versioned modules tree, a `MANIFEST.txt`,
+and a bundled `install.sh`. The tarball needs **nothing** from this repo or the
+toolchain. On the target Pi:
+
+```bash
+tar xzf cjk-kernel-<release>-arm64.tar.gz
+cd cjk-kernel-<release>-arm64
+sudo ./install.sh            # non-destructive install (stock kernel untouched)
+sudo ./install.sh --enable   # also add kernel=…-cjk.img to config.txt
+sudo ./install.sh --uninstall# remove this CJK kernel + its modules
+sudo reboot
+```
 
 ### 2b. On an Apple-silicon / Intel Mac
 
