@@ -1,3 +1,7 @@
+README FIRST: probably [KMSCON](https://github.com/kmscon/kmscon) is a much better, and modern solution. 
+
+This can be a educational tutorial.
+
 # cjk-kernel — build a Raspberry Pi kernel with CJK console support
 
 `cjk-kernel.sh` patches, builds, and installs a Raspberry Pi kernel with the
