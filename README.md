@@ -29,7 +29,7 @@ The patch tree is the `cjktty-patches/` submodule (from bigshans/cjktty-patches,
 The upstream patch set is a git **submodule**, so clone recursively:
 
 ```bash
-git clone --recurse-submodules https://github.com/<you>/cjk-kernel.git
+git clone --recurse-submodules https://github.com/scateu/raspberrypi-cjktty-howto
 # already cloned without submodules?
 git submodule update --init --recursive
 ```
