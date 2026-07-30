@@ -12,7 +12,15 @@ The patch tree is the `cjktty-patches/` submodule (from bigshans/cjktty-patches,
 ## native-build vs cross-compile
  - CM4S: around 3.5 hours
  - E5-2660 40 cores: around 5 minutes
-   
+
+## snapshots
+
+<img src="https://github.com/user-attachments/assets/06df3665-911f-46ec-a8bf-138c8bbfce21" />
+<img src="https://github.com/user-attachments/assets/7dc8ccd7-577f-47fb-9b53-336d6efb2722" />
+<img src="https://github.com/user-attachments/assets/688fe305-f3b7-4e3a-abe8-76ffeb9bad23" />
+<img src="https://github.com/user-attachments/assets/7ae9a013-57bb-44e9-aa24-13c7bcd3081f" />
+
+
 ## Get it
 
 The upstream patch set is a git **submodule**, so clone recursively:
