@@ -1,0 +1,42 @@
+❯ perfect. do you think if it can be complied as DKMS, as a kernel module?                                                                                                 
+
+⏺ Short answer: No — cjktty fundamentally cannot be a DKMS/loadable module. Let me explain precisely why, because it's rooted in what the patch actually touches.
+  
+  Why not
+
+  DKMS builds loadable kernel modules (.ko) against a fixed kernel ABI. That only works when your code is self-contained behind a module interface. cjktty is the opposite
+  — it's a set of in-place edits to built-in core subsystems, not new code you can bolt on. Recall what the patch modifies (from the files we patched):
+
+  - drivers/tty/vt/vt.c, selection.c — the virtual terminal core. It changes the meaning of the screen buffer (the 0xff/0xfe double-width glyph scheme + the extra
+  vc_unicode_screenbuf allocation described in cjktty-原理.txt). This is compiled into vmlinux (CONFIG_VT is bool, not tristate).
+  - drivers/video/fbdev/core/fbcon.c, bitblit.c, fbcon_*.c — the framebuffer console drawing path. fbcon is also built-in on the Pi (CONFIG_FRAMEBUFFER_CONSOLE=y, a bool).
+  - include/linux/font.h, lib/fonts/* — a new struct console_font field (charcount) and the font tables.
+
+  Four hard blockers, any one of which is fatal:
+
+  1. It edits existing functions, not adds new ones. DKMS can't "re-open" do_con_write() or bit_putcs() and rewrite their bodies. A module can only add symbols/hooks, not
+  patch compiled-in code.
+  2. The targets aren't modular. vt, fbcon, and the font core are bool Kconfig symbols — the kernel has no mechanism to load them as .ko at all, so there's nothing for a
+  module to replace.
+  3. It changes a struct layout / data-structure contract. The doubled screen-buffer allocation and the charcount field change how memory is laid out and interpreted
+  across many call sites. That's an ABI change baked into vmlinux, not something a late-loaded module can retrofit.
+  4. Boot-time console. The console must work from early boot; a module loaded later can't own the framebuffer console that's already running.
+
+  What is modular (and what people confuse it with)
+
+  - Font data alone could in principle live in a module (fonts are just data tables, and find_font() walks a registry) — but the rendering changes in fbcon/bitblit that
+  actually make double-width CJK glyphs draw are built-in. So a "CJK font module" without the core patch would still show tofu. Not useful on its own.
+  - The userspace alternative avoids the whole problem: fbterm (the other project that was in your original repo) draws CJK to /dev/fb0 from userspace — no kernel changes
+  at all. That's the trade-off the patch author discusses at the end of cjktty-原理.txt (Wayland/system-compositor as the "proper" fix). It's the realistic "no custom
+  kernel" path, with the downsides they list (must launch it, monopolizes the framebuffer).
+
+  Practical upshot for this repo
+
+  A custom-compiled kernel (what cjk-kernel.sh builds) is the only way to get in-console CJK from cjktty. The good news is our design already gives you the DKMS-like
+  benefits people actually want:
+
+  - Non-destructive & reversible — separate kernel8-cjk.img, versioned /lib/modules/<rel>, one-line config.txt toggle. Stock kernel untouched.
+  - Rebuild-on-upgrade — ./cjk-kernel.sh all re-detects the new uname -r and rebuilds; the release tarball makes redeploying trivial.
+
+  The one thing DKMS gives that we don't is automatic rebuild on every apt kernel bump. If that matters, the closest achievable thing is an apt hook / systemd path unit
+  that re-runs cjk-kernel.sh all when a new linux-image is installed — I can add that as an optional hooks/ piece. Want me to?
