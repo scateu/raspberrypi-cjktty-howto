@@ -1,6 +1,6 @@
 README FIRST: probably [KMSCON](https://github.com/kmscon/kmscon) is a much better, and modern solution. 
 
-This can be a educational tutorial.
+This can be an educational tutorial.
 
 # cjk-kernel — build a Raspberry Pi kernel with CJK console support
 
