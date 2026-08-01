@@ -59,7 +59,7 @@ make ARCH=arm64 olddefconfig
 
 make ARCH=arm64 -j$(nproc) Image modules dtbs
 
-sudo make ARCH=arm64 modules_install
+sudo make ARCH=arm64 INSTALL_MOD_STRIP=1 modules_install
 sudo cp arch/arm64/boot/Image /boot/firmware/kernel8-cjk.img
 sudo cp arch/arm64/boot/dts/broadcom/*.dtb        /boot/firmware/
 sudo cp arch/arm64/boot/dts/overlays/*.dtb*       /boot/firmware/overlays/
